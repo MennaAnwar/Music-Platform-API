@@ -18,5 +18,7 @@ use App\Http\Controllers\DeezerAPIController;
 Route::get('search', [DeezerAPIController::class, 'search']);
 Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
 Route::get('genre', [DeezerAPIController::class, 'Genres']);
+Route::get('chart', [DeezerAPIController::class, 'Charts']);
+
 
 

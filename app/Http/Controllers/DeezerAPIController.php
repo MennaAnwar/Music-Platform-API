@@ -60,4 +60,10 @@ class DeezerAPIController extends Controller
         $response =  Http::get($url);
         return response()->json($response->json());
     }
+
+    public function Charts(){
+        $url = "https://api.deezer.com/chart";
+        $response =  Http::get($url);
+        return response()->json($response->json());
+    }
 }
