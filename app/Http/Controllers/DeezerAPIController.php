@@ -18,9 +18,41 @@ class DeezerAPIController extends Controller
     public function ArtistDetails(Request $request)
     {
         $artist = $request->query('artist');
-        $url = "https://api.deezer.com/artist/" . $artist;
-        $response = Http::get($url);
-        return response()->json($response->json());
+        $artistUrl = "https://api.deezer.com/artist/" . $artist;
+
+        $artistResponse = Http::get($artistUrl);
+
+        if ($artistResponse->successful()) {
+            $artistId =  $artistResponse->json()['id'];
+            $tracklistUrl = $artistResponse->json()['tracklist'] ?? null;
+            $albumsUrl = "https://api.deezer.com/artist/" . $artistId . "/albums";
+
+            $responses = [
+                'artist' => $artistResponse->json()
+            ];
+
+            if ($tracklistUrl) {
+                $tracksResponse = Http::get($tracklistUrl);
+                if ($tracksResponse->successful()) {
+                    $responses['tracks'] = $tracksResponse->json();
+                } else {
+                    $responses['tracksError'] = 'Failed to fetch artist tracks.';
+                }
+            }
+
+            $albumsResponse = Http::get($albumsUrl);
+            if ($albumsResponse->successful()) {
+                $responses['albums'] = $albumsResponse->json();
+            } else {
+                $responses['albumsError'] = 'Failed to fetch artist albums.';
+            }
+
+            return response()->json($responses);
+        } else {
+            return response()->json([
+                'error' => 'Failed to fetch artist details.'
+            ], $artistResponse->status());
+        }
     }
 
     public function Genres(){
