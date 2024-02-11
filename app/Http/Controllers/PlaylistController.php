@@ -13,6 +13,14 @@ class PlaylistController extends Controller
         $playlist->name = $request->name;
         $playlist->save();
 
-        return response()->json($playlist, 201);
+        $playlists = Playlist::all();
+
+        return response()->json($playlists, 201);
+    }
+
+    public function getPlaylists()
+    {
+        $playlists = Playlist::all();
+        return response()->json($playlists);
     }
 }
