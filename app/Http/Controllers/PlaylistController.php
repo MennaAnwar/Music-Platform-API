@@ -53,13 +53,22 @@ class PlaylistController extends Controller
             return response()->json(['message' => 'Playlist not found'], 404);
         }
 
+        $songs = $playlist->songs;
+
         $playlist->songs()->detach();
+
         $playlist->delete();
+
+        foreach ($songs as $song) {
+            if ($song->playlists()->count() == 0) {
+                $song->delete();
+            }
+        }
 
         $remainingPlaylists = Playlist::all();
 
         return response()->json([
-            'message' => 'Playlist deleted successfully',
+            'message' => 'Playlist and its exclusive songs deleted successfully',
             'remainingPlaylists' => $remainingPlaylists
         ]);
     }
