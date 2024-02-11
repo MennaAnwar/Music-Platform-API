@@ -46,5 +46,22 @@ class PlaylistController extends Controller
             return response()->json(['message' => 'Song already exists in the playlist'], 409); // 409 Conflict
         }
     }
+
+    public function DeletePlaylist(Request $request){
+        $playlist = Playlist::find($request->playlistId);
+        if (!$playlist) {
+            return response()->json(['message' => 'Playlist not found'], 404);
+        }
+
+        $playlist->songs()->detach();
+        $playlist->delete();
+
+        $remainingPlaylists = Playlist::all();
+
+        return response()->json([
+            'message' => 'Playlist deleted successfully',
+            'remainingPlaylists' => $remainingPlaylists
+        ]);
+    }
         
 }
