@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeezerAPIController;
+use App\Http\Controllers\PlaylistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,9 @@ Route::get('search', [DeezerAPIController::class, 'search']);
 Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
 Route::get('genre', [DeezerAPIController::class, 'Genres']);
 Route::get('chart', [DeezerAPIController::class, 'Charts']);
+
+Route::post('/playlists', [PlaylistController::class, 'create']);
+
 
 
 
