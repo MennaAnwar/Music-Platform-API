@@ -23,6 +23,7 @@ Route::get('chart', [DeezerAPIController::class, 'Charts']);
 
 Route::post('/playlists', [PlaylistController::class, 'create']);
 Route::get('/playlists', [PlaylistController::class, 'getPlaylists']);
+Route::post('/addSong', [PlaylistController::class, 'addSong']);
 
 
 
