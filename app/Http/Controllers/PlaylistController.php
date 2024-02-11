@@ -39,9 +39,12 @@ class PlaylistController extends Controller
             $song->save();
         }
 
-        $playlist->songs()->syncWithoutDetaching([$song->id]);
-
-        return response()->json(['message' => 'Song added to playlist successfully', 'song' => $song]);
+        if (!$playlist->songs()->where('songs.song_Id', $song->song_Id)->exists()) {
+            $playlist->songs()->attach($song);
+            return response()->json(['message' => 'Song added to playlist successfully', 'song' => $song]);
+        } else {
+            return response()->json(['message' => 'Song already exists in the playlist'], 409); // 409 Conflict
+        }
     }
         
 }
