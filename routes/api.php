@@ -21,6 +21,8 @@ Route::get('search', [DeezerAPIController::class, 'search']);
 Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
 Route::get('genre', [DeezerAPIController::class, 'Genres']);
 Route::get('chart', [DeezerAPIController::class, 'Charts']);
+Route::get('track', [DeezerAPIController::class, 'Track']);
+
 
 Route::post('/playlists', [PlaylistController::class, 'create']);
 Route::get('/playlists', [PlaylistController::class, 'getPlaylists']);

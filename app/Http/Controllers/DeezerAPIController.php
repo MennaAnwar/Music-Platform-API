@@ -66,4 +66,11 @@ class DeezerAPIController extends Controller
         $response =  Http::get($url);
         return response()->json($response->json());
     }
+
+    public function Track(Request $request){
+        $songId = $request->query('songId');
+        $url = "https://api.deezer.com/track/". $songId;
+        $response =  Http::get($url);
+        return response()->json($response->json());
+    }
 }
