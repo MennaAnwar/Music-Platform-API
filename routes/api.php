@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeezerAPIController;
 use App\Http\Controllers\PlaylistController;
-use App\Models\Playlist;
+use App\Http\Controllers\SongController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +27,8 @@ Route::get('/playlists', [PlaylistController::class, 'getPlaylists']);
 Route::post('/addSong', [PlaylistController::class, 'addSong']);
 Route::delete('/deletePlaylist', [PlaylistController::class, 'DeletePlaylist']);
 
+Route::get('/playlist_songs',[SongController::class, 'getSongsForPlaylist']);
+Route::delete('/deleteSong',[SongController::class, 'deleteSongFromPlaylist']);
 
 
 
