@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeezerAPIController;
+use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\SongController;
 
@@ -16,6 +17,15 @@ use App\Http\Controllers\SongController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('register', [PassportAuthController::class, 'register']);
+Route::post('login', [PassportAuthController::class, 'login']);
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('show', [PassportAuthController::class, 'show']);
+    Route::put('update', [PassportAuthController::class, 'update']);
+    Route::delete('delete', [PassportAuthController::class, 'delete']);
+});
 
 Route::get('search', [DeezerAPIController::class, 'search']);
 Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
