@@ -21,7 +21,7 @@ class PassportAuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = $user->createToken('gp')->accessToken;
+        $token = $user->createToken('music')->accessToken;
 
         $userData = [
             'id' => $user->id,

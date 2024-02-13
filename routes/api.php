@@ -25,22 +25,24 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('show', [PassportAuthController::class, 'show']);
     Route::put('update', [PassportAuthController::class, 'update']);
     Route::delete('delete', [PassportAuthController::class, 'delete']);
+
+    Route::get('search', [DeezerAPIController::class, 'search']);
+    Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
+    Route::get('genre', [DeezerAPIController::class, 'Genres']);
+    Route::get('chart', [DeezerAPIController::class, 'Charts']);
+    Route::get('track', [DeezerAPIController::class, 'Track']);
+
+
+    Route::post('/playlists', [PlaylistController::class, 'create']);
+    Route::get('/playlists', [PlaylistController::class, 'getPlaylists']);
+    Route::post('/addSong', [PlaylistController::class, 'addSong']);
+    Route::delete('/deletePlaylist', [PlaylistController::class, 'DeletePlaylist']);
+
+    Route::get('/playlist_songs',[SongController::class, 'getSongsForPlaylist']);
+    Route::delete('/deleteSong',[SongController::class, 'deleteSongFromPlaylist']);
 });
 
-Route::get('search', [DeezerAPIController::class, 'search']);
-Route::get('artist', [DeezerAPIController::class, 'ArtistDetails']);
-Route::get('genre', [DeezerAPIController::class, 'Genres']);
-Route::get('chart', [DeezerAPIController::class, 'Charts']);
-Route::get('track', [DeezerAPIController::class, 'Track']);
 
-
-Route::post('/playlists', [PlaylistController::class, 'create']);
-Route::get('/playlists', [PlaylistController::class, 'getPlaylists']);
-Route::post('/addSong', [PlaylistController::class, 'addSong']);
-Route::delete('/deletePlaylist', [PlaylistController::class, 'DeletePlaylist']);
-
-Route::get('/playlist_songs',[SongController::class, 'getSongsForPlaylist']);
-Route::delete('/deleteSong',[SongController::class, 'deleteSongFromPlaylist']);
 
 
 

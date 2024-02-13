@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Playlist;
 use App\Models\Song;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class SongController extends Controller
 {
     public function getSongsForPlaylist(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $playlist = Playlist::with('songs')->find($request->playlistId);
 
         if (!$playlist) {
@@ -28,8 +34,12 @@ class SongController extends Controller
         return response()->json($songDetailsArray);
     }
 
-    public function deleteSongFromPlaylist(Request $request)
-    {
+    public function deleteSongFromPlaylist(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $playlistId = $request->playlistId;
         $songId = $request->songId;
 

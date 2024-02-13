@@ -5,25 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\Playlist;
 use App\Models\Song;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class PlaylistController extends Controller
 {
     public function create(Request $request){
+        // Ensure there's an authenticated user
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $playlist = new Playlist();
         $playlist->name = $request->name;
+        $playlist->user_id = $user->id; 
         $playlist->save();
 
-        $playlists = Playlist::all();
+        $playlists = $user->playlists; 
 
         return response()->json($playlists, 201);
     }
 
     public function getPlaylists(){
-        $playlists = Playlist::all();
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
+        $playlists = $user->playlists;
         return response()->json($playlists);
     }
 
     public function addSong(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
 
         $playlist = Playlist::find($request->playlistId);
         if (!$playlist) {
@@ -41,11 +59,16 @@ class PlaylistController extends Controller
             $playlist->songs()->attach($song);
             return response()->json(['message' => 'Song added to playlist successfully', 'song' => $song]);
         } else {
-            return response()->json(['message' => 'Song already exists in the playlist'], 409); // 409 Conflict
+            return response()->json(['message' => 'Song already exists in the playlist'], 409); 
         }
     }
 
     public function DeletePlaylist(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $playlist = Playlist::find($request->playlistId);
         if (!$playlist) {
             return response()->json(['message' => 'Playlist not found'], 404);

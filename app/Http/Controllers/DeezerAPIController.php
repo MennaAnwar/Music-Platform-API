@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 
@@ -10,6 +11,10 @@ class DeezerAPIController extends Controller
 {
     public function search(Request $request)
     {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
         $query = $request->query('q');
         $response = Http::get("https://api.deezer.com/search", ['q' => $query]);
         return response()->json($response->json());
@@ -17,6 +22,11 @@ class DeezerAPIController extends Controller
 
     public function ArtistDetails(Request $request)
     {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $artist = $request->query('artist');
         $artistUrl = "https://api.deezer.com/artist/" . $artist;
 
@@ -56,18 +66,33 @@ class DeezerAPIController extends Controller
     }
 
     public function Genres(){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $url = "https://api.deezer.com/genre";
         $response =  Http::get($url);
         return response()->json($response->json());
     }
 
     public function Charts(){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+
         $url = "https://api.deezer.com/chart";
         $response =  Http::get($url);
         return response()->json($response->json());
     }
 
     public function Track(Request $request){
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated'], 401); 
+        }
+        
         $songId = $request->query('songId');
         $url = "https://api.deezer.com/track/". $songId;
         $response =  Http::get($url);
